@@ -119,8 +119,8 @@ if submitted:
 
             prediction = model.predict(input_data)[0]
 
-            st.divider()
-            st.subheader("Prediction Result")
+            st.write("Predicted Final Grade")
+            st.write(f"{prediction:.2f} / 100")
 
             st.success(
                 f"Prediction completed for {student_name}!"
@@ -128,7 +128,7 @@ if submitted:
 
             st.metric(
                 label="Predicted Final Grade",
-                value=f"{float(prediction):.2f} / 20"
+                value=f"{float(prediction):.2f} / 100"
             )
 
         except Exception as error:
