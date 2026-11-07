@@ -90,6 +90,8 @@ with st.form("prediction_form"):
         use_container_width=True
     )
 
+
+
 # Prediction
 if submitted:
 
@@ -106,10 +108,11 @@ if submitted:
                 "absences"
             ]
 
+            # Convert percentage inputs to 0-20 scale
             input_data = pd.DataFrame(
                 [[
-                    previous_grade_average,
-                    G1,
+                    previous_grade_average / 5,
+                    G1 / 5,
                     failures,
                     studytime,
                     absences
@@ -117,19 +120,24 @@ if submitted:
                 columns=feature_columns
             )
 
-            prediction = model.predict(input_data)[0]
+            # Get prediction from trained model
+            prediction = float(model.predict(input_data)[0])
 
-            st.write("Predicted Final Grade")
-            st.write(f"{prediction:.2f} / 100")
+            # Convert predicted grade from 0-20 to 0-100
+            prediction_percentage = prediction * 5
+
+            # Display prediction result
+            st.divider()
+
+            st.subheader("Prediction Result")
 
             st.success(
                 f"Prediction completed for {student_name}!"
             )
 
-            st.metric(
-                label="Predicted Final Grade",
-                value=f"{float(prediction):.2f} / 100"
-            )
+            st.write("Predicted Final Grade")
+
+            st.title(f"{prediction_percentage:.2f} / 100")
 
         except Exception as error:
             st.error(f"Prediction error: {error}")
